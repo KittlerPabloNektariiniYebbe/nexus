@@ -23,23 +23,18 @@
             height: 100%;
         }
 
-        /* Glitch effect for the text */
+        /* PWNED text styling */
         .glitch {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             font-size: 3rem;
             font-weight: bold;
             text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
-            animation: glitch 1s infinite;
-            display: none; /* Hidden by default */
+            animation: glitch 0.5s infinite alternate;
         }
 
         @keyframes glitch {
             0% { text-shadow: 2px 2px #ff0000, -2px -2px #00ff00; }
-            50% { text-shadow: -2px -2px #ff0000, 2px 2px #00ff00; }
-            100% { text-shadow: 2px 2px #ff0000, -2px -2px #00ff00; }
+            100% { text-shadow: -2px -2px #ff0000, 2px 2px #00ff00; }
         }
     </style>
 </head>
@@ -48,8 +43,13 @@
     <!-- Matrix-style background -->
     <canvas id="matrix"></canvas>
 
-    <!-- Hidden PWNED text -->
+    <!-- Moving PWNED text -->
     <h1 class="glitch" id="pwnedText">PWNED BY FEDERALS</h1>
+
+    <!-- Background music -->
+    <audio id="bgMusic" autoplay loop>
+        <source src="https://www.dropbox.com/scl/fi/6j0bcs5bnj4e3j5f5ldz4/nyanpasu.mp3?rlkey=xyz123&raw=1" type="audio/mpeg">
+    </audio>
 
     <script>
         /* MATRIX HACKER EFFECT */
@@ -91,125 +91,23 @@
 
         setInterval(drawMatrix, 50);
 
-        /* RANDOM PWNED TEXT POPUP */
-        function showPwnedText() {
+        /* MOVING PWNED TEXT */
+        function movePwnedText() {
             let text = document.getElementById("pwnedText");
-            text.style.display = "block";
+            let maxX = window.innerWidth - text.clientWidth;
+            let maxY = window.innerHeight - text.clientHeight;
 
-            setTimeout(() => {
-                text.style.display = "none";
-            }, 3000);
+            let randomX = Math.floor(Math.random() * maxX);
+            let randomY = Math.floor(Math.random() * maxY);
+
+            text.style.left = randomX + "px";
+            text.style.top = randomY + "px";
         }
 
-        setInterval(showPwnedText, Math.floor(Math.random() * 15000) + 5000);
-    </script>
+        setInterval(movePwnedText, 1000);
 
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PWNED BY FEDERALS</title>
-    <style>
-        /* Body style */
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: black;
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-        }
-
-        /* Canvas for Matrix effect */
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Glitch effect for the text */
-        .glitch {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            font-weight: bold;
-            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
-            animation: glitch 1s infinite;
-            display: none; /* Hidden by default */
-        }
-
-        @keyframes glitch {
-            0% { text-shadow: 2px 2px #ff0000, -2px -2px #00ff00; }
-            50% { text-shadow: -2px -2px #ff0000, 2px 2px #00ff00; }
-            100% { text-shadow: 2px 2px #ff0000, -2px -2px #00ff00; }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Matrix-style background -->
-    <canvas id="matrix"></canvas>
-
-    <!-- Hidden PWNED text -->
-    <h1 class="glitch" id="pwnedText">PWNED BY FEDERALS</h1>
-
-    <script>
-        /* MATRIX HACKER EFFECT */
-        const canvas = document.getElementById("matrix");
-        const ctx = canvas.getContext("2d");
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        const matrix = letters.split("");
-
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-
-        const drops = [];
-        for (let x = 0; x < columns; x++) {
-            drops[x] = Math.floor(Math.random() * canvas.height / fontSize);
-        }
-
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = "#0F0"; 
-            ctx.font = fontSize + "px monospace";
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = matrix[Math.floor(Math.random() * matrix.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-
-                drops[i]++;
-            }
-        }
-
-        setInterval(drawMatrix, 50);
-
-        /* RANDOM PWNED TEXT POPUP */
-        function showPwnedText() {
-            let text = document.getElementById("pwnedText");
-            text.style.display = "block";
-
-            setTimeout(() => {
-                text.style.display = "none";
-            }, 3000);
-        }
-
-        setInterval(showPwnedText, Math.floor(Math.random() * 15000) + 5000);
+        /* MUSIC AUTOPLAY */
+        document.getElementById("bgMusic").play();
     </script>
 
 </body>
